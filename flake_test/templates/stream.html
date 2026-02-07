@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Stream</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      font-size: 2em;
+      margin-bottom: 30px;
+      color: #00e5ff;
+    }
+
+    img {
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      margin-bottom: 30px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .pause-btn {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+    }
+
+    .pause-btn:hover {
+      opacity: 0.9;
+    }
+
+    .resume-btn {
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+      color: white;
+    }
+
+    .resume-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <h2>📺 Live Video Stream</h2>
+
+  <img id="videoFeed" src="{{ url_for('stream_video', public_id=public_id) }}" width="640" height="480" alt="Live Stream">
+
+  <div class="btn-group">
+    <button class="pause-btn" onclick="pauseStream()">⏸ Pause</button>
+    <button class="resume-btn" onclick="resumeStream()">▶ Resume</button>
+  </div>
+
+  <script>
+    const videoFeed = document.getElementById('videoFeed');
+    const streamURL = videoFeed.src;
+
+    function pauseStream() {
+      videoFeed.src = '';
+    }
+
+    function resumeStream() {
+      videoFeed.src = streamURL;
+    }
+  </script>
+</body>
+</html>

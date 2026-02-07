@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Video</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1, h2 {
+      color: #00e5ff;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    label {
+      font-size: 15px;
+      font-weight: bold;
+      color: #a8f0ff;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      border-radius: 8px;
+      background: #1e1e2f;
+      color: #00e5ff;
+      border: 1px solid #00e5ff;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(to right, #00e5ff, #00c3ff);
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #00e5ff;
+    }
+
+    .video-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .video-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 12px;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+    }
+
+    .video-card p {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #cfcfcf;
+    }
+
+    .video-card .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .video-card a {
+      color: #00e5ff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .video-card a:hover {
+      text-decoration: underline;
+    }
+
+    .logout-link {
+      margin-top: 30px;
+      text-decoration: none;
+      color: #ff4b2b;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .logout-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📤 Upload Video</h1>
+
+  <!-- ✅ FIXED FORM -->
+  <form method="post" enctype="multipart/form-data">
+    <label>Select Video File</label>
+    <input type="file" name="video" accept="video/*" required>
+
+    <label>Select Thumbnail Image</label>
+    <input type="file" name="thumbnail" accept="image/*" required>
+
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>📁 Uploaded Videos</h2>
+  <div class="video-list">
+    {% for video in videos %}
+      <div class="video-card">
+        <p>{{ video.display_name }}</p>
+        <div class="actions">
+          <a href="{{ url_for('stream_view', public_id=video.public_id) }}">▶ Stream</a>
+          {% if role == 'admin' %}
+          <form action="{{ url_for('delete_video', public_id=video.public_id) }}" method="post" style="display:inline;">
+            <button type="submit">Delete</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <a class="logout-link" href="{{ url_for('logout') }}">🚪 Logout</a>
+</body>
+</html>
